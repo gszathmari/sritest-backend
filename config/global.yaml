@@ -1,0 +1,17 @@
+---
+general:
+  CORS:
+    allowed_origins:
+      - "sritest.io"
+reports:
+  ttl: 604800
+  prefix: "report:"
+  hashkeys: "hashkeys"
+http_client:
+  user_agent: 'compatible; sritest.io; https://sritest.io'
+  timeout: 8000
+validator:
+  protocols:
+    - "http"
+    - "https"
+...

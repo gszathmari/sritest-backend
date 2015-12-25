@@ -1,0 +1,7 @@
+.dockerignore
+node_modules
+coverage
+.git
+.DS_Store
+.DS_Store?
+._*
