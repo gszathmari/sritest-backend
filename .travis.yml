@@ -1,0 +1,27 @@
+sudo: required
+
+language: node_js
+
+node_js:
+  - "5"
+
+services:
+  - docker
+  - redis-server
+
+before_script:
+  - npm install -g coffee-script gulp
+  - docker info
+
+script:
+  - npm run-script build
+
+after_success:
+  - docker build -t gszathmari/sritest-backend .
+  - docker pull redis && docker run -d --name redis -p 6666:6666 redis
+  - docker run -d -p 8080:8080 --link redis:redis gszathmari/sritest-backend
+  - sleep 10 && curl --retry 10 --retry-delay 5 -v http://localhost:8080
+
+after_script:
+  - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+  - test $TRAVIS_BRANCH != 'master' || docker push gszathmari/sritest-backend:latest

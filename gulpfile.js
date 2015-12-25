@@ -8,10 +8,10 @@ var coffee = require('gulp-coffee');
 var gutil = require('gulp-util');
 var server = require('gulp-develop-server');
 
-const SRC = './src/';
-const DST = './dist/';
+var SRC = './src/';
+var DST = './dist/';
 
-const paths = {
+var paths = {
       coffeeFiles: SRC + '**/*.coffee',
 };
 

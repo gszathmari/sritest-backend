@@ -1,6 +1,8 @@
 # HTML Subresource Integrity Tester Backend
 
-[ ![Codeship Status for gszathmari/sritest-backend](https://codeship.com/projects/5f1f8d70-8cda-0133-6d4a-0e58ff6a1668/status?branch=master)](https://codeship.com/projects/123982)
+[![Travis branch](https://img.shields.io/travis/gszathmari/sritest-backend/master.svg)](https://travis-ci.org/gszathmari/sritest-backend)
+
+[![](https://badge.imagelayers.io/gszathmari/sritest-backend:latest.svg)](https://imagelayers.io/?images=gszathmari/sritest-backend:latest 'Get your own badge on imagelayers.io')
 
 ## Environmental Variables
 

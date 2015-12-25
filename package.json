@@ -2,7 +2,7 @@
   "name": "sritest",
   "version": "0.1.0",
   "description": "HTML Subresource Integrity Tester Backend",
-  "private": true,
+  "license": "MIT",
   "keywords": [
     "sri",
     "security",
