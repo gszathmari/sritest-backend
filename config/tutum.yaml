@@ -9,6 +9,15 @@ app:
     - 'REDIS_URL=redis://127.0.0.1:6379/0'
   target_num_containers: 1
   mem_limit: 128m
+  links:
+    - memcached
+
+memcached:
+  image: 'memcached'
+  autodestroy: always
+  restart: on-failure
+  target_num_containers: 1
+  mem_limit: 32m
 
 balancer:
   image: 'tutum/haproxy:latest'
