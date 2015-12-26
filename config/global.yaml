@@ -2,7 +2,7 @@
 general:
   CORS:
     allowed_origins:
-      - "sritest.io"
+      - "https://sritest.io"
 reports:
   ttl: 604800
   prefix: "report:"

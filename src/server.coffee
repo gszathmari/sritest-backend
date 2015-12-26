@@ -22,7 +22,7 @@ corsOptions =
 #
 
 # Use Restify's built-in CORS handler
-app.use restify.CORS corsOptions
+# app.use restify.CORS corsOptions
 app.use restify.fullResponse()
 # Restify workaround for cURL
 app.pre restify.pre.userAgentConnection()
