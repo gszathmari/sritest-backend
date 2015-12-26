@@ -22,6 +22,7 @@ exports.getStats = (req, res, next) ->
       response = new restify.InternalServerError(message)
       return next response
     else
+      res.cache()
       res.json stats.get()
       return next()
 
@@ -85,5 +86,6 @@ exports.getOne = (req, res, next) ->
           message: "Report has successfully been retrieved"
           success: true
           results: report.data
+        res.cache()
         res.json response
         return next()
