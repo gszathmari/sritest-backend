@@ -1,11 +1,15 @@
 app:
   image: 'gszathmari/sritest-backend:latest'
   autodestroy: always
+  restart: on-failure
   environment:
     - NEW_RELIC_LICENSE_KEY=secret
     - PAPERTRAILAPP_HOST=example.com
     - PAPERTRAILAPP_PORT=1234
     - 'REDIS_URL=redis://127.0.0.1:6379/0'
+  target_num_containers: 1
+  mem_limit: 128m
+
 balancer:
   image: 'tutum/haproxy:latest'
   environment:
