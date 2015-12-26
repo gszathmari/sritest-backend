@@ -1,6 +1,6 @@
 newrelic = ->
   appName = "sritest"
-  key = process.env.NEWRELIC_LICENSE_KEY
+  key = process.env.NEW_RELIC_LICENSE_KEY
 
   require 'newrelic' if key
 
