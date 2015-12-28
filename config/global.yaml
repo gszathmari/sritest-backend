@@ -4,7 +4,7 @@ general:
     allowed_origins:
       - "https://sritest.io"
 reports:
-  ttl: 604800
+  ttl: 2419200
   prefix: "report:"
   hashkeys: "hashkeys"
 http_client:
