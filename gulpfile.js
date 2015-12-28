@@ -6,7 +6,7 @@ var clean = require('gulp-clean');
 var coffeelint = require('gulp-coffeelint');
 var coffee = require('gulp-coffee');
 var gutil = require('gulp-util');
-var server = require('gulp-develop-server');
+var nodemon = require('gulp-nodemon');
 
 var SRC = './src/';
 var DST = './dist/';
@@ -43,8 +43,10 @@ gulp.task('develop', ['server:start'], function() {
   gulp.watch(paths.coffeeFiles, ['build', server.restart]);
 });
 
-gulp.task('server:start', function() {
-  server.listen({
-    path: './dist/server.js'
-  });
-});
+gulp.task('serve', function () {
+  nodemon({
+    script: './src/server.coffee'
+  , ext: 'coffee'
+  , env: { 'NODE_ENV': 'development' }
+  })
+})
