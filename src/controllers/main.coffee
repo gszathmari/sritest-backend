@@ -7,6 +7,7 @@ Report = require '../models/report'
 Stats = require '../models/stats'
 config = require '../helpers/config'
 logger = require '../helpers/logger'
+memcached = require '../helpers/memcached'
 
 exports.notImplemented = (req, res, next) ->
   message = "Oh noes, this feature is missing"
@@ -15,16 +16,29 @@ exports.notImplemented = (req, res, next) ->
 
 # Retrieve statistics (last submitted task, last results)
 exports.getStats = (req, res, next) ->
-  stats = new Stats
-  stats.retrieve (err, stats) ->
-    if err
-      message = "Error retrieving statistics, please try again later"
-      response = new restify.InternalServerError(message)
-      return next response
-    else
+  key = 'stats'
+  ttl = 2 * 60
+  # Get response from cache
+  memcached.get key, (err, response) ->
+    if not err and response
       res.cache()
-      res.json stats.get()
+      res.json response
       return next()
+    # Retrieve response from database if not found in cache
+    else
+      stats = new Stats
+      stats.retrieve (err, stats) ->
+        if err
+          message = "Error retrieving statistics, please try again later"
+          response = new restify.InternalServerError(message)
+          return next response
+        else
+          response = stats.get()
+          # Store response in Memcached
+          memcached.set key, response, ttl, (err) ->
+            res.cache()
+            res.json response
+            return next()
 
 # Creates new task submits for processing
 exports.create = (req, res, next) ->
@@ -57,6 +71,8 @@ exports.create = (req, res, next) ->
 
 # Retrieves SRI report by ID
 exports.getOne = (req, res, next) ->
+  # Cache response in Memcached for this amount of seconds
+  ttl = 60 * 60
   # Validate user submitted ID
   unless validator.isUUID req.params.id, 4
     message = "Report ID parameter is not valid, please try again"
@@ -65,27 +81,34 @@ exports.getOne = (req, res, next) ->
   else
     # Report ID
     id = req.params.id.toString()
-    # Create task object
-    report = new Report
-    # Pull report from database using the ID
-    report.findById id, (err, report) ->
-      # If we have an error while returning report, respond with HTTP 500
-      if err
-        logger.warn "Error while retrieving report: #{err.message}"
-        message = "Error retrieving report, please try again later"
-        response = new restify.InternalServerError(message)
-        return next response
-      # If report is not found, return HTTP 404
-      else if report is null
-        message = "Report is not available yet, please try again later"
-        response = new restify.NotFoundError(message)
-        return next response
-      # If report is ready, return the report back to the user
-      else
-        response =
-          message: "Report has successfully been retrieved"
-          success: true
-          results: report.data
+    memcached.get id, (err, response) ->
+      if not err and response
         res.cache()
         res.json response
         return next()
+      else
+        # Create task object
+        report = new Report
+        # Pull report from database using the ID
+        report.findById id, (err, report) ->
+          # If we have an error while returning report, respond with HTTP 500
+          if err
+            logger.warn "Error while retrieving report: #{err.message}"
+            message = "Error retrieving report, please try again later"
+            response = new restify.InternalServerError(message)
+            return next response
+          # If report is not found, return HTTP 404
+          else if report is null
+            message = "Report is not available yet, please try again later"
+            response = new restify.NotFoundError(message)
+            return next response
+          # If report is ready, return the report back to the user
+          else
+            response =
+              message: "Report has successfully been retrieved"
+              success: true
+              results: report.data
+            memcached.set id, response, ttl, (err) ->
+              res.cache()
+              res.json response
+              return next()
