@@ -9,6 +9,10 @@ services:
   - docker
   - redis-server
 
+cache:
+  directories:
+    - node_modules
+
 before_script:
   - npm install -g coffee-script gulp
   - docker info
