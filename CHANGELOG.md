@@ -1,3 +1,7 @@
+## v0.2.1 (2016-01-03)
+
+  - Better exception handling when getting stats
+
 ## v0.2.0 (2015-12-28)
 
   - Caching responses using Memcached
