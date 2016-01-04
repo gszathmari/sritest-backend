@@ -28,7 +28,9 @@ class Stats
                 unsafe: tags.scripts.unsafe.length +
                   tags.stylesheets.unsafe.length
                 safe: tags.scripts.safe.length +
-                  tags.stylesheets.safe.length
+                  tags.stylesheets.safe.length +
+                  tags.scripts.sameorigin.length +
+                  tags.stylesheets.sameorigin.length
             # Append object to array
             @results.push itemStats
           catch err

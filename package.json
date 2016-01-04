@@ -1,6 +1,6 @@
 {
   "name": "sritest",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "HTML Subresource Integrity Tester Backend",
   "license": "MIT",
   "keywords": [
@@ -42,6 +42,7 @@
     "request": "^2.67.0",
     "restify": "^4.0.3",
     "restify-cors-middleware": "0.0.6",
+    "same-origin": "^0.1.1",
     "uuid": "^2.0.1",
     "validator": "^4.4.0",
     "version-healthcheck": "^0.1.2",

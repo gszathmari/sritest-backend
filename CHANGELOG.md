@@ -1,3 +1,7 @@
+## v0.3.0 (2016-01-04)
+
+  - Adding support to filter out same origin results
+
 ## v0.2.3 (2016-01-04)
 
   - Add proper CORS support
