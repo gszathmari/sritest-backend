@@ -32,7 +32,7 @@ class Stats
             # Append object to array
             @results.push itemStats
           catch err
-            logger.error "Error while assembling statistics: #{err.message}"
+            logger.debug "Error while assembling statistics: #{err.message}"
             logger.debug err.stack
         # Return Stats object when ready
         return fn null, statsObj
