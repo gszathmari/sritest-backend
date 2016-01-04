@@ -1,3 +1,7 @@
+## v0.2.2 (2016-01-04)
+
+  - Tentatively remove CORS support
+
 ## v0.2.1 (2016-01-03)
 
   - Better exception handling when getting stats
