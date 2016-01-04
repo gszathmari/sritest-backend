@@ -1,6 +1,5 @@
 ## v0.2.2 (2016-01-04)
 
-  - Tentatively remove CORS support
   - Limit chattiness when statistics generation is failing
 
 ## v0.2.1 (2016-01-03)

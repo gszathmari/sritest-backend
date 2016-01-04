@@ -21,6 +21,8 @@ corsOptions =
 # Applying Restify built-in plugins and other helpers
 #
 
+# Add CORS headers here
+app.use restify.fullResponse()
 # Restify workaround for cURL
 app.pre restify.pre.userAgentConnection()
 # Restify workaround for handling trailing slashes
