@@ -3,6 +3,7 @@
 #
 # Newrelic should be on the top
 newrelic = require './helpers/newrelic'
+cors = require './helpers/cors'
 
 restify = require 'restify'
 chalk = require 'chalk'
@@ -21,8 +22,9 @@ corsOptions =
 # Applying Restify built-in plugins and other helpers
 #
 
-# Add CORS headers here
-app.use restify.fullResponse()
+# Add CORS header support here
+app.pre cors.preflight
+app.use cors.actual
 # Restify workaround for cURL
 app.pre restify.pre.userAgentConnection()
 # Restify workaround for handling trailing slashes

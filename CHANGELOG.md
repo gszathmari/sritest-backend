@@ -1,3 +1,7 @@
+## v0.2.3 (2016-01-04)
+
+  - Add proper CORS support
+
 ## v0.2.2 (2016-01-04)
 
   - Limit chattiness when statistics generation is failing
