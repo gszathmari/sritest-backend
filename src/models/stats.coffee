@@ -3,7 +3,7 @@ logger = require '../helpers/logger'
 
 class Stats
   constructor: ->
-    @q = 'hashkeys BY report:*->submitted GET report:*->url GET
+    @q = 'hashkeys BY report:*->submitted GET report:*->id GET report:*->url GET
       report:*->tags DESC LIMIT 0 50'
     @results = new Array
 
@@ -18,12 +18,13 @@ class Stats
         while results.length > 0
           try
             # Splice array to get individual item data
-            item = results.splice 0, 2
+            item = results.splice 0, 3
             # Convert script and stylesheet tags into object
-            tags = JSON.parse item[1]
+            tags = JSON.parse item[2]
             # Construct statistics object
             itemStats =
-              url: item[0]
+              id: item[0]
+              url: item[1]
               stats:
                 unsafe: tags.scripts.unsafe.length +
                   tags.stylesheets.unsafe.length

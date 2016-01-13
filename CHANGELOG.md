@@ -1,3 +1,8 @@
+## v0.3.1 (2016-01-13)
+
+  - Add report ID to stats endpoint
+  - Add developer URI to allowed CORS domains
+
 ## v0.3.0 (2016-01-04)
 
   - Adding support to filter out same origin results
