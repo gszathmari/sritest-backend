@@ -61,6 +61,9 @@ class Task
       # Match URLs like <script src="/js/track.js">
       if tagURL.match /^\/\w+/
         return true
+      # Match URLs like src="./js/track.js" or src="../js/track.js"
+      if tagURL.match /^\..+/
+        return true
       # Match URLs like <script src="js/track.js"> but not <script src="http://...
       else if (tagURL.match /^\w+/) and (not tagURL.match /^http.+/)
         return true
