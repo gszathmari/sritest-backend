@@ -1,4 +1,8 @@
-## v0.3.2 (2016-01-13)
+## v0.4.0 (2016-02-26)
+
+  - Switching backend database from Redis to MySQL
+
+## vg (2016-01-13)
 
   - Adjust same origin detecting algorithm
 

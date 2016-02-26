@@ -1,9 +1,11 @@
 _ = require 'lodash'
+boolean = require 'boolean'
 
 Report = require '../models/report'
 ReportSchema = require '../models/reportschema'
-redis = require '../helpers/db'
+db = require '../helpers/db'
 config = require '../helpers/config'
+rebuildId = require '../helpers/rebuildid'
 
 # Based on http://timjrobinson.com/how-to-structure-your-nodejs-models-2/
 class Report
@@ -18,46 +20,52 @@ class Report
   save: (fn) ->
     @data = @sanitize @data
     self = @
-    statsKey = config.reports.hashkeys
-    ttl = config.reports.ttl
-    key = config.reports.prefix + @data.id
-    # Store result in Redis
-    pipeline = redis.pipeline()
-    # Store result
-    pipeline.hmset key, @data
-    # Set TTL value
-    pipeline.expire key, ttl
-    # Add report ID to statistics if not hidden
-    unless @data.hidden
-      pipeline.lpush statsKey, @data.id
-    # Execute Redis commands
-    pipeline.exec (err) ->
+    db.getConnection (err, connection) =>
       if err
         return fn err, self
       else
-        return fn null, self
+        q = 'INSERT INTO reports SET `reportid` = UNHEX(REPLACE(?,"-","")), `statuscode` = ?, `error` = ?, `tags` = ?, `url` = ?, `hidden` = ?'
+        inserts = [
+          @data.id,
+          @data.statusCode,
+          @data.error,
+          @data.tags,
+          @data.url,
+          @data.hidden
+        ]
+        connection.query q, inserts, (err) ->
+          connection.release()
+          # Return with error if database throws an error
+          if err
+            return fn err, self
+          # Return without error if INSERT was successful
+          else
+            return fn null, self
 
-  findById: (id, fn) ->
-    key = config.reports.prefix + id
-    # Pull data from database
-    redis.hgetall key, (err, report) ->
-      # Return with error if Redis fails
+  findById: (reportid, fn) ->
+    db.getConnection (err, connection) ->
+      # Return with error if database fails
       if err
         return fn err, null
-      # Generate error when item is not found
-      else if Object.keys(report).length is 0
-        return fn null, null
       else
-        # Dump response into page object and return object back
-        report =
-          id: report.id
-          hidden: report.hidden
-          submitted: report.submitted
-          url: report.url
-          error: report.error
-          statusCode: report.statusCode
-          tags: report.tags
-        return fn null, new Report report
+        q = 'SELECT LOWER(HEX(`reportid`)) AS `reportid`, UNIX_TIMESTAMP(`submitted`) AS `submitted`, `url`, `statuscode`, `tags`, `error`, `hidden` FROM reports WHERE reportid = UNHEX(REPLACE(?,"-",""))'
+        connection.query q, [reportid], (err, results) ->
+          # Release database connection into pool
+          connection.release()
+          if results.length > 0
+            # Dump response into page object and return object back
+            report =
+              id: rebuildId results[0].reportid
+              hidden: boolean results[0].hidden
+              submitted: results[0].submitted
+              url: results[0].url
+              error: results[0].error or ""
+              statusCode: results[0].statuscode
+              tags: results[0].tags
+            return fn null, new Report report
+          else
+            # Return empty object if report is not found
+            return fn null, null
 
   get: (name) ->
     return @data[name]

@@ -12,7 +12,6 @@ normalizeURL = require '../helpers/normalizeurl'
 
 class Task
   constructor: ->
-    @submitted = Math.floor(Date.now() / 1000)
     @id = uuid.v4()
 
   # Gets page from user submitted URL
@@ -38,8 +37,6 @@ class Task
           id: @id
           # Hidden flag
           hidden: hidden
-          # Task Submitted Unix timestamp
-          submitted: @submitted
           # Target URL
           url: targetURL
           # Store error message
@@ -52,7 +49,7 @@ class Task
         report.save (err) ->
           if err
             # Return error if save was unsuccessful
-            logger.error "Redis error while saving Report: #{err.message}"
+            logger.error "Database error while saving Report: #{err.message}"
     # Return report ID immediately
     return fn null, @id
 

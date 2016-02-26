@@ -1,7 +1,7 @@
 PageSchema =
   id: null
   hidden: null
-  submitted: Math.floor(Date.now() / 1000)
+  submitted: null
   url: null
   error: null
   statusCode: null

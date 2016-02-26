@@ -9,7 +9,16 @@ This is the backend of [sritest.io](https://sritest.io)
 
 ## Environmental Variables
 
-* `REDIS_URL`: Database where SRI reports are stored. Declare in `redis://host:port` format
+### Database Settings
+
+* `DB_HOST`: _(default: 127.0.0.1)_ Hostname or IP address of MySQL
+* `DB_PORT`: _(default: 3306)_ Port where MySQL is listening on
+* `DB_USER`: _(default: root)_ Database username
+* `DB_PASSWORD`: _(default: root)_ Database password
+* `DB_NAME`: _(default: sritest)_ Database schema name
+
+### Misc
+
 * `PAPERTRAILAPP_HOST`: _(optional)_ Hostname of [Papertrail](https://papertrailapp.com) service for remote logging
 * `PAPERTRAILAPP_PORT`: _(optional)_ Port of [Papertrail](https://papertrailapp.com) service for remote logging
 * `NEW_RELIC_LICENSE_KEY`: _(optional)_ [Newrelic](http://www.newrelic.com) API key for performance monitoring

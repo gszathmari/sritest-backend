@@ -1,6 +1,6 @@
 {
   "name": "sritest",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "HTML Subresource Integrity Tester Backend",
   "license": "MIT",
   "keywords": [
@@ -34,10 +34,9 @@
     "chalk": "^1.1.1",
     "cheerio": "^0.19.0",
     "coffee-script": "^1.10.0",
-    "hiredis": "^0.4.1",
-    "ioredis": "^1.12.2",
     "js-yaml": "^3.3.1",
     "memcached": "^2.2.1",
+    "mysql": "^2.10.2",
     "newrelic": "^1.24.0",
     "request": "^2.67.0",
     "restify": "^4.0.3",

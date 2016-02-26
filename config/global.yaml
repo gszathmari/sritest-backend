@@ -4,10 +4,6 @@ general:
     allowed_origins:
       - "http://sritest.io:3000"
       - "https://sritest.io"
-reports:
-  ttl: 2419200
-  prefix: "report:"
-  hashkeys: "hashkeys"
 http_client:
   user_agent: 'compatible; sritest.io; https://sritest.io'
   timeout: 8000
